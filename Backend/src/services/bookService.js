@@ -1,7 +1,12 @@
-const { Book } = require("../models"); // Import Book từ models/index.js
+const { Book } = require("../models");
 
 exports.getAllBooks = async (query) => {
-  return await Book.findAll({ where: query });
+  const where = {};
+  const { Op } = require("sequelize");
+  if (query.title) where.title = { [Op.like]: `%${query.title}%` };
+  if (query.author) where.author = { [Op.like]: `%${query.author}%` };
+  if (query.category) where.category = { [Op.like]: `%${query.category}%` };
+  return await Book.findAll({ where });
 };
 
 exports.getBookById = async (id) => {

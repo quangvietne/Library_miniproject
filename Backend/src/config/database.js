@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
   {
     host: process.env.MYSQL_HOST,
     dialect: "mysql",
-    logging: false, // Tắt log SQL để giảm clutter (có thể bật để debug)
+    logging: false, 
   }
 );
 

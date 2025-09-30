@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
-app.use(require("./middleware/logger")); // Sử dụng middleware logger
+// Activity logs are handled in controllers to align with ENUM actions
 
 // Routes
 app.use("/api/auth", require("./routes/authRoutes"));

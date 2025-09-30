@@ -7,7 +7,6 @@ const Register = () => {
     username: "",
     password: "",
     email: "",
-    role: "user",
   });
   const navigate = useNavigate();
 
@@ -80,19 +79,7 @@ const Register = () => {
             fontSize: "16px",
           }}
         />
-        <select
-          value={formData.role}
-          onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-          style={{
-            padding: "12px",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-            fontSize: "16px",
-          }}
-        >
-          <option value="user">Người dùng</option>
-          <option value="admin">Quản trị viên</option>
-        </select>
+        {/* Role selector removed; users are always registered as regular users */}
         <button
           type="submit"
           style={{

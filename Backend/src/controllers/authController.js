@@ -1,16 +1,16 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { User } = require("../models"); // Import User từ models/index.js
+const { User, ActivityLog } = require("../models");
 
 exports.register = async (req, res) => {
   try {
-    const { username, password, email, role } = req.body;
+    const { username, password, email } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       username,
       password: hashedPassword,
       email,
-      role,
+      role: "user",
     });
     res.status(201).json({ message: "User registered", userId: user.id });
   } catch (err) {
@@ -30,8 +30,31 @@ exports.login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
+    try {
+      await ActivityLog.create({
+        user_id: user.id,
+        action: "login",
+        details: "",
+      });
+    } catch (e) {}
     res.json({ token });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+exports.registerAdmin = async (req, res) => {
+  try {
+    const { username, password, email } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      username,
+      password: hashedPassword,
+      email,
+      role: "admin",
+    });
+    res.status(201).json({ message: "Admin registered", userId: user.id });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 };

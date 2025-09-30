@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getBorrows } from "../../services/api.js";
+import { getBorrows, returnBorrow } from "../../services/api.js";
 
 const BorrowRecordTable = () => {
   const [borrows, setBorrows] = useState([]);
@@ -25,9 +25,8 @@ const BorrowRecordTable = () => {
             <th style={{ padding: "10px", border: "1px solid #ddd" }}>
               User ID
             </th>
-            <th style={{ padding: "10px", border: "1px solid #ddd" }}>
-              Book ID
-            </th>
+            <th style={{ padding: "10px", border: "1px solid #ddd" }}>Book ID</th>
+            <th style={{ padding: "10px", border: "1px solid #ddd" }}>Book Title</th>
             <th style={{ padding: "10px", border: "1px solid #ddd" }}>
               Borrow Date
             </th>
@@ -40,6 +39,7 @@ const BorrowRecordTable = () => {
             <th style={{ padding: "10px", border: "1px solid #ddd" }}>
               Status
             </th>
+            <th style={{ padding: "10px", border: "1px solid #ddd" }}>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -49,9 +49,8 @@ const BorrowRecordTable = () => {
                 <td style={{ padding: "10px", border: "1px solid #ddd" }}>
                   {borrow.user_id}
                 </td>
-                <td style={{ padding: "10px", border: "1px solid #ddd" }}>
-                  {borrow.book_id}
-                </td>
+                <td style={{ padding: "10px", border: "1px solid #ddd" }}>{borrow.book_id}</td>
+                <td style={{ padding: "10px", border: "1px solid #ddd" }}>{borrow.Book?.title || borrow.book?.title || ""}</td>
                 <td style={{ padding: "10px", border: "1px solid #ddd" }}>
                   {borrow.borrow_date}
                 </td>
@@ -63,6 +62,29 @@ const BorrowRecordTable = () => {
                 </td>
                 <td style={{ padding: "10px", border: "1px solid #ddd" }}>
                   {borrow.status}
+                </td>
+                <td style={{ padding: "10px", border: "1px solid #ddd" }}>
+                  {borrow.status !== "returned" && (
+                    <button
+                      onClick={async () => {
+                        try {
+                          await returnBorrow(borrow.id);
+                          setBorrows((prev) =>
+                            prev.map((b) =>
+                              b.id === borrow.id
+                                ? { ...b, status: "returned", return_date: new Date().toISOString().split("T")[0] }
+                                : b
+                            )
+                          );
+                        } catch (err) {
+                          alert("Return failed: " + (err.response?.data?.error || err.message));
+                        }
+                      }}
+                      style={{ padding: "6px 10px", background: "#007BFF", color: "#fff", border: "none", cursor: "pointer" }}
+                    >
+                      Return
+                    </button>
+                  )}
                 </td>
               </tr>
             ))
