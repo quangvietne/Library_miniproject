@@ -5,7 +5,7 @@ import BookCard from "./BookCard.jsx";
 const BookList = () => {
   const [books, setBooks] = useState([]);
   const [query, setQuery] = useState({ title: "", author: "", category: "" });
-  const [newBook, setNewBook] = useState({ title: "", author: "", category: "", quantity: "", description: "" });
+  const [newBook, setNewBook] = useState({ title: "", author: "", category: "", quantity: "" });
   const [role, setRole] = useState(null);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const BookList = () => {
             <input className="input" placeholder="Author" value={newBook.author} onChange={(e) => setNewBook({ ...newBook, author: e.target.value })} />
             <input className="input" placeholder="Category" value={newBook.category} onChange={(e) => setNewBook({ ...newBook, category: e.target.value })} />
             <input className="input" type="number" min={0} step={1} placeholder="Quantity" value={newBook.quantity} onChange={(e) => setNewBook({ ...newBook, quantity: e.target.value })} />
-            <input className="input" placeholder="Description" value={newBook.description} onChange={(e) => setNewBook({ ...newBook, description: e.target.value })} />
+            
           </div>
           <button
             className="btn btn-primary"
@@ -54,7 +54,7 @@ const BookList = () => {
                 const payload = { ...newBook, quantity: Number(newBook.quantity || 0) };
                 const { data } = await createBook(payload);
                 setBooks((prev) => [...prev, data]);
-                setNewBook({ title: "", author: "", category: "", quantity: "", description: "" });
+                setNewBook({ title: "", author: "", category: "", quantity: ""});
               } catch (err) {
                 alert("Create book failed: " + (err.response?.data?.error || err.message));
               }
