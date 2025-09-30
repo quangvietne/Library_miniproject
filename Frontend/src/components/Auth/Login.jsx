@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { login } from "../../services/api.js";
 
 const Login = () => {
@@ -20,45 +20,78 @@ const Login = () => {
   return (
     <div
       style={{
-        maxWidth: "300px",
+        maxWidth: "400px",
         margin: "50px auto",
-        padding: "20px",
-        border: "1px solid #ccc",
+        padding: "30px",
+        border: "1px solid #e0e0e0",
+        borderRadius: "8px",
+        boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+        backgroundColor: "#fff",
       }}
     >
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <h2 style={{ textAlign: "center", color: "#333", marginBottom: "20px" }}>
+        Đăng Nhập
+      </h2>
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+      >
         <input
           type="text"
-          placeholder="Username"
+          placeholder="Tên đăng nhập"
           value={formData.username}
           onChange={(e) =>
             setFormData({ ...formData, username: e.target.value })
           }
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+          style={{
+            padding: "12px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            fontSize: "16px",
+          }}
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Mật khẩu"
           value={formData.password}
           onChange={(e) =>
             setFormData({ ...formData, password: e.target.value })
           }
-          style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+          style={{
+            padding: "12px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            fontSize: "16px",
+          }}
         />
         <button
           type="submit"
           style={{
-            width: "100%",
-            padding: "10px",
-            background: "#007BFF",
+            padding: "12px",
+            backgroundColor: "#007BFF",
             color: "white",
             border: "none",
+            borderRadius: "4px",
+            fontSize: "16px",
+            cursor: "pointer",
           }}
         >
-          Login
+          Đăng Nhập
         </button>
       </form>
+      <p style={{ textAlign: "center", marginTop: "20px", color: "#666" }}>
+        Chưa có tài khoản?{" "}
+        <Link
+          to="/register"
+          style={{
+            color: "#007BFF",
+            textDecoration: "none",
+            fontWeight: "bold",
+          }}
+        >
+          Tạo tài khoản
+        </Link>
+      </p>
     </div>
   );
 };
